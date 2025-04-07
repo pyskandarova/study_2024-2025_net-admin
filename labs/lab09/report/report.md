@@ -1,8 +1,8 @@
 ---
 ## Front matter
-title: "Шаблон отчёта по лабораторной работе"
-subtitle: "Простейший вариант"
-author: "Дмитрий Сергеевич Кулябов"
+title: "Администрирование локальных сетей"
+subtitle: "Лабораторная работа 9"
+author: "Скандарова Полина Юрьевна"
 
 ## Generic otions
 lang: ru-RU
@@ -70,52 +70,74 @@ header-includes:
 
 # Цель работы
 
-Здесь приводится формулировка цели лабораторной работы. Формулировки
-цели для каждой лабораторной работы приведены в методических
-указаниях.
-
-Цель данного шаблона --- максимально упростить подготовку отчётов по
-лабораторным работам.  Модифицируя данный шаблон, студенты смогут без
-труда подготовить отчёт по лабораторным работам, а также познакомиться
-с основными возможностями разметки Markdown.
-
-# Задание
-
-Здесь приводится описание задания в соответствии с рекомендациями
-методического пособия и выданным вариантом.
-
-# Теоретическое введение
-
-Здесь описываются теоретические аспекты, связанные с выполнением работы.
-
-Например, в табл. [-@tbl:std-dir] приведено краткое описание стандартных каталогов Unix.
-
-: Описание некоторых каталогов файловой системы GNU Linux {#tbl:std-dir}
-
-| Имя каталога | Описание каталога                                                                                                          |
-|--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `/`          | Корневая директория, содержащая всю файловую                                                                               |
-| `/bin `      | Основные системные утилиты, необходимые как в однопользовательском режиме, так и при обычной работе всем пользователям     |
-| `/etc`       | Общесистемные конфигурационные файлы и файлы конфигурации установленных программ                                           |
-| `/home`      | Содержит домашние директории пользователей, которые, в свою очередь, содержат персональные настройки и данные пользователя |
-| `/media`     | Точки монтирования для сменных носителей                                                                                   |
-| `/root`      | Домашняя директория пользователя  `root`                                                                                   |
-| `/tmp`       | Временные файлы                                                                                                            |
-| `/usr`       | Вторичная иерархия для данных пользователя                                                                                 |
-
-Более подробно про Unix см. в [@tanenbaum_book_modern-os_ru; @robbins_book_bash_en; @zarrelli_book_mastering-bash_en; @newham_book_learning-bash_en].
+Изучение возможностей протокола STP и его модификаций по обеспечению отказоустойчивости сети, агрегированию интерфейсов и перераспределению нагрузки между ними.
 
 # Выполнение лабораторной работы
 
-Описываются проведённые действия, в качестве иллюстрации даётся ссылка на иллюстрацию (рис. [-@fig:001]).
+Формирую резервное соединение между коммутаторами msk-donskaya-sw-1 и msk-donskaya-sw-3 (рис. [-@fig:001]). Для этого:
+– заменяю соединение между коммутаторами msk-donskaya-sw-1 (Gig0/2) и msk-donskaya-sw-4 (Gig0/1) на соединение между коммутаторами msk-donskaya-sw-1 (Gig0/2) и msk-donskaya-sw-3 (Gig0/2);
+– делаю порт на интерфейсе Gig0/2 коммутатора msk-donskaya-sw-3 транковым:
+msk −donskaya −sw −3( config )# int g0 /2
+msk −donskaya −sw −3( config −if)# switchport mode trunk
+– соединение между коммутаторами msk-donskaya-sw-1 и msk-donskaya- sw-4 делаю через интерфейсы Fa0/23, не забыв активировать их в транковом режиме. 
 
-![Название рисунка](image/placeimg_800_600_tech.jpg){#fig:001 width=70%}
+![Логическая схема локальной сети с резервным соединением](image/1.PNG){#fig:001 width=70%}
+
+С оконечного устройства dk-donskaya-1 пингую серверы mail и web. В режиме симуляции прослеживаю движение пакетов ICMP. Убеждаюсь, что движение пакетов происходит через коммутатор msk-donskaya-sw-2. На коммутаторе msk-donskaya-sw-2 смотрю состояние протокола STP для vlan 3:
+msk −donskaya −sw −2# show spanning −tree vlan 3
+В результате будет выведена следующая информация, связанная с протоколом STP(рис. [-@fig:002]).
+
+![Информация, связанная с протоколом STP](image/2.PNG){#fig:002 width=70%}
+
+Здесь, в частности, указывается, что данное устройство является корневым (строка This bridge is the root). В качестве корневого коммутатора STP настраиваю коммутатор msk-donskaya-sw-1:
+msk −donskaya −sw −1# configure terminal
+msk −donskaya −sw −1( config )#spanning −tree vlan 3 root primary
+Используя режим симуляции, убеждаюсь, что пакеты ICMP пойдут от хоста dk-donskaya-1 до mail через коммутаторы msk-donskaya-sw-1 и msk-donskaya-sw-3, а от хоста dk-donskaya-1 до web через коммутаторы
+msk-donskaya-sw-1 и msk-donskaya-sw-2. Настраиваю режим Portfast на тех интерфейсах коммутаторов, к которым
+подключены серверы:
+msk −donskaya −sw −2( config )# interface f0 /1
+msk −donskaya −sw −2( config −if)#spanning −tree portfast
+msk −donskaya −sw −2( config )# interface f0 /2
+msk −donskaya −sw −2( config −if)#spanning −tree portfast
+msk −donskaya −sw −3( config )# interface f0 /1
+msk −donskaya −sw −3( config −if)#spanning −tree portfast
+msk −donskaya −sw −3( config )# interface f0 /2
+msk −donskaya −sw −3( config −if)#spanning −tree portfast
+Изучаю отказоустойчивость протокола STP и время восстановления соединения при переключении на резервное соединение. Для этого использую команду ping -n 1000 mail.donskaya.rudn.ru на хосте dk-donskaya-1, а разрыв соединения обеспечиваю переводом соответствующего интерфейса коммутатора в состояние shutdown. Переключаю коммутаторы режим работы по протоколу Rapid PVST+:
+msk −donskaya −sw −1( config )#spanning −tree mode rapid −pvst
+msk −donskaya −sw −2( config )#spanning −tree mode rapid −pvst
+msk −donskaya −sw −3( config )#spanning −tree mode rapid −pvst
+msk −donskaya −sw −4( config )#spanning −tree mode rapid −pvst
+msk − pavlovskaya −sw −1( config )#spanning −tree mode rapid −pvst
+Изучаю отказоустойчивость протокола Rapid PVST+ и время восстановления соединения при переключении на резервное соединение. Сформировываю агрегированное соединение интерфейсов Fa0/20 – Fa0/23 между коммутаторами msk-donskaya-sw-1 и msk-donskaya-sw-4 (рис. [-@fig:003]).
+
+![Логическая схема локальной сети с агрегированным соединением](image/3.PNG){#fig:003 width=70%}
+
+Настраиваю агрегирование каналов (режим EtherChannel):
+msk −donskaya −sw −1( config )# interface range f0 /20 − 23
+msk −donskaya −sw −1( config −if − range )#channel − group 1 mode on
+msk −donskaya −sw −1( config −if − range )#exit
+msk −donskaya −sw −1( config )# interface port − channel 1
+msk −donskaya −sw −1( config −if)# switchport mode trunk
+msk −donskaya −sw −4( config )# int range f0 /20 − 23
+msk −donskaya −sw −4( config −if − range )#no switchport access vlan 104
+msk −donskaya −sw −4( config −if − range )#exit
+msk −donskaya −sw −4( config )# interface range f0 /20 − 23
+msk −donskaya −sw −4( config −if − range )#channel − group 1 mode on
+msk −donskaya −sw −4( config −if − range )#exit
+msk −donskaya −sw −4( config )# interface port − channel 1
+msk −donskaya −sw −4( config −if)# switchport mode trunk
+Здесь использована следующая терминология Cisco:
+– EtherChannel — технология агрегирования каналов;
+– port-channel — логический интерфейс, который объединяет физиче- ские интерфейсы;
+– channel-group — команда, которая указывает, какому логическому интерфейсу принадлежит физический интерфейс и какой режим используется для агрегирования;
+– возможные параметры channel-group:
+– active — включить LACP;
+– passive — включить LACP, только если придёт сообщение LACP;
+– desirable — включить PAgP;
+– auto — включить PAgP, только если придёт сообщение PAgP;
+– on — включить только EtherChannel.
 
 # Выводы
 
-Здесь кратко описываются итоги проделанной работы.
-
-# Список литературы{.unnumbered}
-
-::: {#refs}
-:::
+Изучены возможности протокола STP и его модификации по обеспечению отказоустойчивости сети, агрегированию интерфейсов и перераспределению нагрузки между ними.
