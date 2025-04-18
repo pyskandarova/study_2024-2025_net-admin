@@ -1,0 +1,176 @@
+<h1 id="информация">Информация</h1>
+<h2 id="докладчик">Докладчик</h2>
+<ul>
+<li>Скандарова Полина Юрьевна</li>
+<li>Российский университет дружбы народов</li>
+<li><a href="mailto:1132221815@pfur.ru">1132221815@pfur.ru</a></li>
+<li><a href="https://skandarovapy.github.io/ru/" class="uri">https://skandarovapy.github.io/ru/</a></li>
+</ul>
+<h1 id="вводная-часть">Вводная часть</h1>
+<h2 id="цели-и-задачи">Цели и задачи</h2>
+<p>Освоить настройку прав доступа пользователей к ресурсам сети.</p>
+<h1 id="выполнение-лабораторной-работы">Выполнение лабораторной работы</h1>
+<h2 id="section">1</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/1.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Рабочая область проекта с добавленными ноутбуками администраторов</li>
+</ul>
+</div>
+</div>
+<h2 id="section-1">2</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/2.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Добавленные DNS и gateway адреса</li>
+</ul>
+</div>
+</div>
+<h2 id="section-2">3</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/3.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Добавленный статический IP-адрес</li>
+</ul>
+</div>
+</div>
+<h2 id="section-3">4</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/4.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Создание списка контроля доступа с названием servers-out</li>
+<li>Подключение список прав доступа servers-out к интерфейсу f0/0.3 и применение к исходящему трафику (out)</li>
+<li>Добавление правила, разрешающего устройству администратора с ip-адресом 10.128.6.200 доступ на web-сервер (10.128.0.2) по протоколам FTP и telnet, в список контроля доступа servers-out</li>
+</ul>
+</div>
+</div>
+<h2 id="section-4">5</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/5.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Проверка доступа к web-серверу по протоколу FTP с устройства администратора</li>
+</ul>
+</div>
+</div>
+<h2 id="section-5">6</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/6.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Всем узлам внутренней сети (10.128.0.0) разрешён доступ по протоколу SMB (работает через порт 445 протокола TCP) к каталогам общего пользования</li>
+<li>Любым узлам разрешён доступ к file-серверу по протоколу FTP</li>
+<li>Всем разрешён доступ к почтовому серверу по протоколам POP3 и SMTP</li>
+<li>Правило разрешения для icmp-запросов добавлено в начало списка контроля доступа</li>
+</ul>
+</div>
+</div>
+<h2 id="section-6">7</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/7.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Применение команды msk−donskaya−gw−1# show access−lists</li>
+</ul>
+</div>
+</div>
+<h2 id="section-7">8</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/8.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Даётся разрешение устройству с адресом 10.128.6.200 на любые действия (any)</li>
+<li>К интерфейсу f0/0.104 подключается список прав доступа other-in и применяется к входящему трафику (in)</li>
+<li>Устройству администратора с адресом 10.128.6.200 разрешён доступ к сети сетевого оборудования (10.128.1.0)</li>
+<li>К интерфейсу f0/0.2 подключается список прав доступа management-out и применяется к исходящему трафику (out)</li>
+</ul>
+</div>
+</div>
+<h1 id="самостоятельная-работа">Самостоятельная работа</h1>
+<h2 id="section-8">9</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/9.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Проверка доступа к разным серверам с устройства администратора</li>
+</ul>
+</div>
+</div>
+<h2 id="section-9">10</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/10.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Проблемы с доступом у ноутбука</li>
+</ul>
+</div>
+</div>
+<h2 id="section-10">11</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/11.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Проверка доступа к web-серверу по протоколу FTP с устройства администратора</li>
+</ul>
+</div>
+</div>
+<h2 id="section-11">12</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/12.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Исправление проблем с доступом</li>
+</ul>
+</div>
+</div>
+<h2 id="section-12">13</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/13.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Добавленный статический IP-адрес</li>
+</ul>
+</div>
+</div>
+<h2 id="section-13">14</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/14.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Настройка разрешений для ноутбука администратора на Павловской</li>
+</ul>
+</div>
+</div>
+<h2 id="section-14">15</h2>
+<div class="columns" data-align="center">
+<div class="column" style="width:70%;">
+<p><img src="./image/15.PNG" /></p>
+</div><div class="column" style="width:30%;">
+<ul>
+<li>Проверка списка разрешений</li>
+</ul>
+</div>
+</div>
+<h1 id="результаты">Результаты</h1>
+<h2 id="вывод">Вывод</h2>
+<ul>
+<li>Освоена настройка прав доступа пользователей к ресурсам сети.</li>
+</ul>
