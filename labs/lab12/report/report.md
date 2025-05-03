@@ -1,8 +1,8 @@
 ---
 ## Front matter
-title: "Шаблон отчёта по лабораторной работе"
-subtitle: "Простейший вариант"
-author: "Дмитрий Сергеевич Кулябов"
+title: "Лабораторная работа №12"
+subtitle: "Администрирование локальных сетей"
+author: "Скандарова Полина Юрьевна"
 
 ## Generic otions
 lang: ru-RU
@@ -70,52 +70,178 @@ header-includes:
 
 # Цель работы
 
-Здесь приводится формулировка цели лабораторной работы. Формулировки
-цели для каждой лабораторной работы приведены в методических
-указаниях.
-
-Цель данного шаблона --- максимально упростить подготовку отчётов по
-лабораторным работам.  Модифицируя данный шаблон, студенты смогут без
-труда подготовить отчёт по лабораторным работам, а также познакомиться
-с основными возможностями разметки Markdown.
-
-# Задание
-
-Здесь приводится описание задания в соответствии с рекомендациями
-методического пособия и выданным вариантом.
-
-# Теоретическое введение
-
-Здесь описываются теоретические аспекты, связанные с выполнением работы.
-
-Например, в табл. [-@tbl:std-dir] приведено краткое описание стандартных каталогов Unix.
-
-: Описание некоторых каталогов файловой системы GNU Linux {#tbl:std-dir}
-
-| Имя каталога | Описание каталога                                                                                                          |
-|--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `/`          | Корневая директория, содержащая всю файловую                                                                               |
-| `/bin `      | Основные системные утилиты, необходимые как в однопользовательском режиме, так и при обычной работе всем пользователям     |
-| `/etc`       | Общесистемные конфигурационные файлы и файлы конфигурации установленных программ                                           |
-| `/home`      | Содержит домашние директории пользователей, которые, в свою очередь, содержат персональные настройки и данные пользователя |
-| `/media`     | Точки монтирования для сменных носителей                                                                                   |
-| `/root`      | Домашняя директория пользователя  `root`                                                                                   |
-| `/tmp`       | Временные файлы                                                                                                            |
-| `/usr`       | Вторичная иерархия для данных пользователя                                                                                 |
-
-Более подробно про Unix см. в [@tanenbaum_book_modern-os_ru; @robbins_book_bash_en; @zarrelli_book_mastering-bash_en; @newham_book_learning-bash_en].
+Приобретение практических навыков по настройке доступа локальной сети к внешней сети посредством NAT.
 
 # Выполнение лабораторной работы
 
-Описываются проведённые действия, в качестве иллюстрации даётся ссылка на иллюстрацию (рис. [-@fig:001]).
+Первоначальная настройка маршрутизатора provider-gw-1
 
-![Название рисунка](image/placeimg_800_600_tech.jpg){#fig:001 width=70%}
+  provider −gw −1> enable
+  provider −gw −1# configure terminal
+  provider −gw −1( config )# line vty 0 4
+  provider −gw −1( config − line )# password cisco
+  provider −gw −1( config − line )# login
+  provider −gw −1( config − line )#exit
+  provider −gw −1( config )# line console 0
+  provider −gw −1( config − line )# password cisco
+  provider −gw −1( config − line )# login
+  provider −gw −1( config − line )#exit
+  provider −gw −1( config )#enable secret cisco
+  provider −gw −1( config )# service password − encryption
+  provider −gw −1( config )# username admin privilege 1 secret cisco
+
+(рис. [-@fig:001]).
+
+![Первоначальная настройка маршрутизатора provider-pyskandarova-gw-1](image/1.PNG){#fig:001 width=70%}
+
+Первоначальная настройка коммутатора provider-sw-1
+
+  provider −sw −1> enable
+  provider −sw −1# configure terminal
+  provider −sw −1( config )# line vty 0 4
+  provider −sw −1( config − line )# password cisco
+  provider −sw −1( config − line )# login
+  provider −sw −1( config − line )#exit
+  provider −sw −1( config )# line console 0
+  provider −sw −1( config − line )# password cisco
+  provider −sw −1( config − line )# login
+  provider −sw −1( config − line )#exit
+  provider −sw −1( config )#enable secret cisco
+  provider −sw −1( config )# service password − encryption
+  provider −sw −1( config )# username admin privilege 1 secret cisco
+
+(рис. [-@fig:002]).
+
+![Первоначальная настройка маршрутизатора provider-pyskandarova-sw-1](image/2.PNG){#fig:002 width=70%}
+
+Настройка интерфейсов маршрутизатора provider-gw-1
+
+  provider −gw −1> enable
+  provider −gw −1# configure terminal
+  provider −gw −1( config )# interface f0/0
+  provider −gw −1( config −if)#no shutdown
+  provider −gw −1( config −if)#exit
+  provider −gw −1( config )# interface f0 /0.4
+  provider −gw −1( config −subif)# encapsulation dot1Q 4
+  provider −gw −1( config −subif)#ip address 198.51.100.1 255.255.255.240
+  provider −gw −1( config −subif)# description mks − donskaya
+  provider −gw −1( config −subif)#exit
+  provider −gw −1( config )# interface f0/1
+  provider −gw −1( config −if)#no shutdown
+  provider −gw −1( config −if)#ip address 192.0.2.1 255.255.255.0
+  provider −gw −1( config −if)# description internet
+  provider −gw −1( config −if)#exit
+  provider −gw −1( config )#exit
+
+
+(рис. [-@fig:003]).
+
+![Настройка интерфейсов маршрутизатора provider-gw-1](image/3.PNG){#fig:003 width=70%}
+
+Настройка интерфейсов коммутатора provider-sw-1
+
+  provider −sw −1> enable
+  provider −sw −1# configure terminal
+  provider −sw −1( config )# interface f0/1
+  provider −sw −1( config −if)# switchport mode trunk
+  provider −sw −1( config −if)#exit
+  provider −sw −1( config )# interface f0/2
+  provider −sw −1( config −if)# switchport mode trunk
+  provider −sw −1( config −if)#exit
+  provider −sw −1( config )#vlan 4
+  provider −sw −1( config −vlan)#name nat
+  provider −sw −1( config −vlan)#exit
+  provider −sw −1( config )# interface vlan4
+  provider −sw −1( config −if)#no shutdown
+  provider −sw −1( config −if)#exit
+
+(рис. [-@fig:004]).
+
+![Настройка интерфейсов маршрутизатора provider-sw-1](image/4.PNG){#fig:004 width=70%}
+
+Настройка интерфейсов маршрутизатора msk-donskaya-gw-1
+
+  msk −donskaya −gw −1> enable
+  msk −donskaya −gw −1# configure terminal
+  msk −donskaya −gw −1( config )# interface f0/1
+  msk −donskaya −gw −1( config −if)#no shutdown
+  msk −donskaya −gw −1( config −if)#exit
+  msk −donskaya −gw −1( config )# interface f0 /1.4
+  msk −donskaya −gw −1( config −subif)# encapsulation dot1Q 4
+  msk −donskaya −gw −1( config −subif)#ip address 198.51.100.2 255.255.255.240
+  msk −donskaya −gw −1( config −subif)# description internet
+  msk −donskaya −gw −1( config −subif)#exit
+  msk −donskaya −gw −1( config )#exit
+  msk −donskaya −gw −1> enable
+  msk −donskaya −gw −1# configure terminal
+  msk −donskaya −gw −1( config )#ip route 0.0.0.0 0.0.0.0 198.51.100.1
+  msk −donskaya −gw −1( config )#exit
+
+(рис. [-@fig:005]).
+
+![Настройка интерфейсов маршрутизатора msk-donskaya-gw-1](image/5.PNG){#fig:005 width=70%}
+
+Настройка пула адресов для NAT, настройка списка доступа для NAT, сеть дисплейных классов, сеть кафедр, сеть администрации, доступ для компьютера администратора.
+
+  msk −donskaya −gw −1> enable
+  msk −donskaya −gw −1# configure terminal
+  msk −donskaya −gw −1( config )#ip nat pool main − pool 198.51.100.2 198.51.100.14 netmask 255.255.255.240
+  msk −donskaya −gw −1( config )#ip access −list extended nat −inet
+  msk −donskaya −gw −1( config −ext −nacl)#remark dk
+  msk −donskaya −gw −1( config −ext −nacl)#permit tcp 10.128.3.0 0.0.0.255 host 192.0.2.11 eq 80
+  msk −donskaya −gw −1( config −ext −nacl)#permit tcp 10.128.3.0 0.0.0.255 host 192.0.2.12 eq 80
+  msk −donskaya −gw −1( config −ext −nacl)#remark departments
+  msk −donskaya −gw −1( config −ext −nacl)#permit tcp 10.128.4.0 0.0.0.255 host 192.0.2.13 eq 80
+  msk −donskaya −gw −1( config −ext −nacl)#remark adm
+  msk −donskaya −gw −1( config −ext −nacl)#permit tcp 10.128.5.0 0.0.0.255 host 192.0.2.14 eq 80
+  msk −donskaya −gw −1( config −ext −nacl)#remark admin
+  msk −donskaya −gw −1( config −ext −nacl)#permit ip host 10.128.6.200 any
+
+(рис. [-@fig:006]).
+
+![Настройка пула адресов для NAT, настройка списка доступа для NAT, сеть дисплейных классов, сеть кафедр, сеть администрации, доступ для компьютера администратора.](image/6.PNG){#fig:006 width=70%}
+
+Настройка NAT
+
+  msk −donskaya −gw −1> enable
+  msk −donskaya −gw −1# configure terminal
+  msk −donskaya −gw −1( config )#ip nat inside source list nat −inet pool main − pool overload
+  msk −donskaya −gw −1( config )# int f0 /0.3
+  msk −donskaya −gw −1( config −subif)#ip nat inside
+  msk −donskaya −gw −1( config )# interface f0 /0.101
+  msk −donskaya −gw −1( config −subif)#ip nat inside
+  msk −donskaya −gw −1( config −subif)#exit
+  msk −donskaya −gw −1( config )# interface f0 /0.102
+  msk −donskaya −gw −1( config −subif)#ip nat inside
+  msk −donskaya −gw −1( config −subif)#exit
+  msk −donskaya −gw −1( config )# interface f0 /0.103
+  msk −donskaya −gw −1( config −subif)#ip nat inside
+  msk −donskaya −gw −1( config −subif)#exit
+  msk −donskaya −gw −1( config )# interface f0 /0.104
+  msk −donskaya −gw −1( config −subif)#ip nat inside
+  msk −donskaya −gw −1( config −subif)#exit
+  msk −donskaya −gw −1( config )# interface f0 /1.4
+  msk −donskaya −gw −1( config −subif)#ip nat outside
+  msk −donskaya −gw −1( config −subif)#exit
+
+(рис. [-@fig:007]).
+
+![Настройка NAT](image/7.PNG){#fig:007 width=70%}
+
+Настройка доступа из Интернета
+WWW-сервер, файловый сервер, почтовый сервер, доступ по RDP
+
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.0.2 80 198.51.100.2 80
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.0.3 20 198.51.100.3 20
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.0.3 21 198.51.100.3 21
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.0.4 25 198.51.100.4 25
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.0.4 110 198.51.100.4 110
+  msk −donskaya −gw −1( config )#ip nat inside source static tcp 10.128.6.200 3389 198.51.100.10 3389
+
+ (рис. [-@fig:008]).
+
+![WWW-сервер, файловый сервер, почтовый сервер, доступ по RDP](image/8.PNG){#fig:008 width=70%}
 
 # Выводы
 
-Здесь кратко описываются итоги проделанной работы.
-
-# Список литературы{.unnumbered}
-
-::: {#refs}
-:::
+Приобретены практические навыки по настройке доступа локальной сети к внешней сети посредством NAT.
